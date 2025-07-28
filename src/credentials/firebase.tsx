@@ -17,8 +17,12 @@ export const firebaseConfig = {
 
 // export const firebaseApp = initializeApp(config);
 export const app = initializeApp(firebaseConfig);
-// export const storage = getStorage(firebaseApp);
-export const storage = getStorage(app);
+
+let storage: ReturnType<typeof getStorage> | undefined = undefined;
+if (typeof window !== 'undefined') {
+  storage = getStorage(app);
+}
+export { storage };
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 // export const analytics = getAnalytics(app);

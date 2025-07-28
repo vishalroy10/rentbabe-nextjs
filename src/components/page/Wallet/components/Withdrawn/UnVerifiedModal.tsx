@@ -159,6 +159,7 @@ const UnVerifiedModal: React.FC<IUnVerifiedModal> = ({
     setLoading(true);
 
     const upload = async (file: File) => {
+      if (!storage) throw new Error('Firebase storage is not available.');
       const uploadImageRef = ref(storage, `${VERIFICATION}/${uid}/${Date.now()}-${file.name}`);
       const uploadTask = await uploadBytes(uploadImageRef, file);
       const url = await getDownloadURL(uploadTask.ref);
@@ -168,6 +169,13 @@ const UnVerifiedModal: React.FC<IUnVerifiedModal> = ({
 
     try {
       setIndicator('Please wait, uploading images...');
+
+      // When using storage, check if it is defined
+      if (!storage) {
+        // Handle error, e.g., show a message or return early
+        console.error('Firebase storage is not available.');
+        return;
+      }
 
       const urls = await Promise.all([upload(frontFile), upload(backFile)]);
 

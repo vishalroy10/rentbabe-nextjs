@@ -157,6 +157,7 @@ export const StringHelper = {
     };
   },
   getImageUrl: (path: string) => {
+    if (typeof window === 'undefined') return undefined;
     const storage = getStorage(app, process.env.NEXT_PUBLIC_IMAGE_PREFIX);
     const uploadVideoRef = ref(storage, `${path}`);
     return uploadVideoRef;
